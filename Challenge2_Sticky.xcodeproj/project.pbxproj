@@ -10,22 +10,9 @@
 		280A14662DB21FB700C616AB /* Challenge2_Sticky.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Challenge2_Sticky.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		280A14D12DB220BA00C616AB /* Exceptions for "Challenge2_Sticky" folder in "Challenge2_Sticky" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"Challenge2-Sticky-Info.plist",
-			);
-			target = 280A14652DB21FB700C616AB /* Challenge2_Sticky */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		280A14682DB21FB700C616AB /* Challenge2_Sticky */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				280A14D12DB220BA00C616AB /* Exceptions for "Challenge2_Sticky" folder in "Challenge2_Sticky" target */,
-			);
 			path = Challenge2_Sticky;
 			sourceTree = "<group>";
 		};
