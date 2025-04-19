@@ -14,6 +14,12 @@ final class MainReducer: ObservableObject {
         switch intent {
         case .stickyTabButtonTapped(let type):
             state.selectedType = type
+            
+        case .navigationButtonTapped:
+            state.isNavigated = true
+            
+        case .resetIsNavigated:
+            state.isNavigated = false
         }
     }
 }

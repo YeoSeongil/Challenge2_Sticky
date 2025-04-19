@@ -7,4 +7,5 @@
 
 struct MainState {
     var selectedType: StickyTabButtonType = .all
+    var isNavigated: Bool = false
 }

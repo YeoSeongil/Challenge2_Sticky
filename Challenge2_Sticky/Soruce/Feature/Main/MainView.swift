@@ -36,25 +36,39 @@ struct MainView: View {
                         }
                     }.padding(.bottom, 24)
                     
-                    ScrollView(showsIndicators: false) {
-                        LazyVStack(spacing: 16) {
-                            ForEach(mockSticky, id: \.self) { item in
-                                StickyCell(sticky: item)
-                            }
+                    List {
+                        ForEach(mockSticky, id: \.self) { item in
+                            StickyCell(sticky: item)
+                                .swipeActions(edge: .trailing) {
+                                    Button(role: .destructive) {
+                                        
+                                    } label: {
+                                        Label("삭제", systemImage: "trash")
+                                    }
+                                }
                         }
                     }
+                    .listStyle(.plain)
+                    .padding(.horizontal, -20)
+                    .padding([.leading, .trailing], 0)
                 }
             }
             .padding(.horizontal,16)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink {
-                        
+                    Button {
+                        reducer.reduce(.navigationButtonTapped)
                     } label: {
                         Image(systemName: "plus")
                             .foregroundStyle(Color.primary)
                     }
                 }
+            }
+            .navigationDestination(isPresented: Binding(
+                get: { reducer.state.isNavigated },
+                set: { if !$0 { reducer.reduce(.resetIsNavigated) }}))
+            {
+                AddStickyView()
             }
         }
     }

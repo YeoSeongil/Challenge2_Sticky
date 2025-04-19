@@ -7,4 +7,6 @@
 
 enum MainIntent {
     case stickyTabButtonTapped(StickyTabButtonType)
+    case navigationButtonTapped
+    case resetIsNavigated
 }
