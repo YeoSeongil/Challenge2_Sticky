@@ -2,39 +2,43 @@
 //  Sticky.swift
 //  Challenge2_Sticky
 //
-//  Created by 성일 on 4/18/25.
+//  Created by 성일 on 4/21/25.
 //
 
 import SwiftUI
+import SwiftData
 
-struct Sticky: Hashable {
-    let title: String
-    let tag: String
-    let place: String
-    let date: Date
-    let image: String
+// Q?
+// 각 스티키마다 스티커북이 있음
+// 스티커는 총 8개이고, isSelected 변수를 통해 선택 됐는지, 안됐는지 관리함
+// 모델이 두 개여야 하는지? 관계 설정을 해야하는지?
+
+// Sticker1 ~ 8까지 변수를 만들고, isSelected를 관리할지?
+@Model
+final class Sticky {
+    @Attribute(.unique) var id: UUID
+    var title: String
+    var tag: String
+    var place: String
+    var date: Date
+    var image: Data
     
-    init(title: String,
-         tag: String,
-         place: String,
-         date: Date,
-         image: String
+    @Relationship(deleteRule: .cascade) var stickerBook: StickerBook?
+    
+    init(
+        id: UUID,
+        title: String,
+        tag: String,
+        place: String,
+        date: Date,
+        image: Data
     ) {
+        self.id = UUID()
         self.title = title
         self.tag = tag
         self.place = place
-        self.date = date
+        self.date = Date()
         self.image = image
+        self.stickerBook = StickerBook(stickyID: id)
     }
-}
-
-extension Sticky {
-    static let mockSticky: [Sticky] = [
-        Sticky(title: "라면 쏟음", tag: "화남", place: "기숙사", date: Date(), image: "plus"),
-        Sticky(title: "신발 짝짝이로 신음", tag: "어이없음", place: "지하철", date: Date(), image: "plus"),
-        Sticky(title: "에어팟 물에 빠뜨림", tag: "화남", place: "우리집 주방", date: Date(), image: "plus"),
-        Sticky(title: "맥주병 깨버림", tag: "부끄러움", place: "통집", date: Date(), image: "plus"),
-        Sticky(title: "에어팟 연결 안됐는데 노래 크게 틈", tag: "부끄러움", place: "메인랩", date: Date(), image: "plus"),
-        Sticky(title: "몰라유", tag: "어이없음", place: "몰라유", date: Date(), image: "plus"),
-    ]
 }
