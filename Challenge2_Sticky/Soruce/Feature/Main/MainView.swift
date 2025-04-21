@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MainView: View {
-    // Mock Data
-    private let mockSticky: [Sticky] = Sticky.mockSticky
+    @Environment(\.modelContext) private var modelContext: ModelContext
+    @Query private var stickies: [Sticky]
     
     @StateObject private var reducer: MainReducer
     
@@ -37,8 +38,9 @@ struct MainView: View {
                     }.padding(.bottom, 24)
                     
                     List {
-                        ForEach(mockSticky, id: \.self) { item in
+                        ForEach(stickies, id: \.self) { item in
                             StickyCell(sticky: item)
+                                .listRowSeparator(.hidden)
                                 .swipeActions(edge: .trailing) {
                                     Button(role: .destructive) {
                                         
