@@ -12,12 +12,20 @@ struct StickyCell: View {
     
     var body: some View {
         HStack(alignment: .top) {
-            Image(systemName: "camera")
-                .resizable()
-                .scaledToFill()
-                .frame(width: 100, height: 144)
-                .clipShape(.rect(cornerRadius: 5))
-            
+            if let uiImage = UIImage(data: sticky.image) {
+                Image(uiImage: uiImage)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 100, height: 144)
+                    .clipShape(.rect(cornerRadius: 5))
+            } else {
+                Image(systemName: "photo")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 100, height: 144)
+                    .clipShape(.rect(cornerRadius: 5))
+            }
+                
             VStack(alignment: .leading, spacing: 4) {
                 Text(sticky.tag)
                     .font(.h5)
@@ -39,8 +47,4 @@ struct StickyCell: View {
             Spacer()
         }
     }
-}
-
-#Preview {
-    StickyCell(sticky: .init(title: "배고프다", tag: "화남", place: "포항공대", date: Date(), image: "plus"))
 }
