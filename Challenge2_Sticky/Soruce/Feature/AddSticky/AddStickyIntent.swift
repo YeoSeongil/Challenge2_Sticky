@@ -13,8 +13,8 @@ enum AddStickyIntent {
     case updateContentText(String)
     case updateSelectedImage(PhotosPickerItem?)
     case updateCurrentImage(UIImage?)
+    case updatePlace(String)
     case validateTextLength(TextFieldType)
     case stickyTagButtonTapped(StickyType)
     case updateStickyButton(Bool)
-    //case addStickyButtonTapped
 }

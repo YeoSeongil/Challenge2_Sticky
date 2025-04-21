@@ -27,6 +27,11 @@ final class AddStickyReducer: ObservableObject {
                     state.title = String(state.title.prefix(type.maxLength))
                 }
                 
+            case .place:
+                if state.place.count > type.maxLength {
+                    state.place = String(state.place.prefix(type.maxLength))
+                }
+                
             case .content:
                 if state.content.count > type.maxLength {
                     state.content = String(state.content.prefix(type.maxLength))
@@ -34,7 +39,7 @@ final class AddStickyReducer: ObservableObject {
             }
             
         case .stickyTagButtonTapped(let type):
-            state.selectedType = type
+            state.selectedTag = type
             
         case .updateSelectedImage(let image):
             state.selectedImage = image
@@ -45,6 +50,10 @@ final class AddStickyReducer: ObservableObject {
             
         case .updateStickyButton(let vaild):
             state.isVaildNextButton = vaild
+            
+        case .updatePlace(let place):
+            state.place = place
+            updateValidationState()
         }
     }
 }
@@ -52,8 +61,13 @@ final class AddStickyReducer: ObservableObject {
 extension AddStickyReducer {
     private func updateValidationState() {
         let isTitleValid = !state.title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        
         let isContentValid = !state.content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        
+        let isPlaceValid = !state.place.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        
         let isImageValid = state.currentImage != nil
-        state.isVaildNextButton = isTitleValid && isContentValid && isImageValid
+        
+        state.isVaildNextButton = isTitleValid && isContentValid && isPlaceValid && isImageValid
     }
 }
