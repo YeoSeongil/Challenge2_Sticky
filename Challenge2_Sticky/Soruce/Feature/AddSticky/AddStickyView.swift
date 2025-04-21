@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct AddStickyView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext: ModelContext
     
     @FocusState private var isFocusedTitle: Bool
+    @FocusState private var isFocusedPlace: Bool
     @FocusState private var isFocusedContent: Bool
     
     @StateObject private var reducer: AddStickyReducer
@@ -49,6 +52,29 @@ struct AddStickyView: View {
                     }
                     
                     VStack {
+                        HStack {
+                            Text("장소")
+                                .font(.h4)
+                            
+                            Spacer()
+                            
+                            Text("\(reducer.state.place.count)/10")
+                                .font(.body5)
+                                .foregroundStyle(.gray)
+                        }
+                        TextField("실수를 저지른 장소를 입력해주세요.",
+                                  text: Binding(get: { reducer.state.place },
+                                                set: { reducer.reduce(.updatePlace($0)) })
+                        )
+                        .focused($isFocusedPlace)
+                        .padding(.vertical, 12)
+                        .padding(.leading, 7)
+                        .background(Color.milkGray)
+                        .customFocusedStyle(isFocued: isFocusedPlace, cornerRadius: 8)
+                        .onChange(of: reducer.state.title) { reducer.reduce(.validateTextLength(.place)) }
+                    }
+                    
+                    VStack {
                         VStack(alignment: .leading) {
                             HStack {
                                 Text("내용")
@@ -82,7 +108,7 @@ struct AddStickyView: View {
                             HStack {
                                 ForEach(StickyType.allCases, id: \.self) { type in
                                     StickyTabButton(title: type.buttonTitle,
-                                                    isSelected: reducer.state.selectedType == type)
+                                                    isSelected: reducer.state.selectedTag == type)
                                     {
                                         reducer.reduce(.stickyTagButtonTapped(type))
                                     }
@@ -94,12 +120,12 @@ struct AddStickyView: View {
                     VStack(alignment: .leading) {
                         Text("이미지")
                             .font(.h4)
-            
+                        
                         PhotoSelectedView(reducer: reducer)
                     }
                     
                     Button("등록하기") {
-                        print("123")
+                        addSticky()
                     }
                     .font(.h4)
                     .foregroundStyle(Color.white)
@@ -128,6 +154,26 @@ struct AddStickyView: View {
     }
 }
 
+
+private extension AddStickyView {
+    func addSticky() {
+        guard let uiImage = reducer.state.currentImage else { return }
+        guard let imageData = uiImage.jpegData(compressionQuality: 0.7) else { return }
+        
+        let newSticky = Sticky(
+            id: UUID(),
+            title: reducer.state.title,
+            tag: reducer.state.selectedTag.buttonTitle,
+            place: reducer.state.place,
+            date: Date(),
+            image: imageData
+        )
+        
+        modelContext.insert(newSticky)
+        
+        dismiss()
+    }
+}
 #Preview {
     AddStickyView()
 }
